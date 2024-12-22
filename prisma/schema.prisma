@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id      Int               @id @default(autoincrement())
+  username     String            @db.VarChar(100)
+  email        String            @unique @db.VarChar(150)
+  password     String            @db.VarChar(100)
+  token        String?           @db.VarChar(100)
+  level        Int               @default(1)
+  expBar       Int               @default(100)
+  achievements UserAchievement[]
+  notifactions Notification[]
+  runs         Run[]
+  challenges   UserChallenge[]
+  friendLists  Friendlist[]
+  histories    History[]
+
+  @@map("users")
+}
+
+model Achievement {
+  achievement_id Int                       @id @default(autoincrement())
+  name           String                    @db.VarChar(100)
+  description    String                    @db.Text
+  image          String                    @db.VarChar(255)
+  users          UserAchievement[]
+  notifications  NotificationAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  user_achievement_id Int         @id @default(autoincrement())
+  user_id             Int
+  achievement_id      Int
+  user                User        @relation(fields: [user_id], references: [user_id])
+  achievement         Achievement @relation(fields: [achievement_id], references: [achievement_id])
+
+  @@map("user_achievements")
+}
+
+model Notification {
+  notification_id Int                       @id @default(autoincrement())
+  user_id         Int
+  date            DateTime
+  user            User                      @relation(fields: [user_id], references: [user_id])
+  achievements    NotificationAchievement[]
+  friendlists     NotificationFriendlist[]
+
+  @@map("notifications")
+}
+
+model NotificationAchievement {
+  notification_achievement_id Int          @id @default(autoincrement())
+  notification_id             Int
+  achievement_id              Int
+  notification                Notification @relation(fields: [notification_id], references: [notification_id])
+  achievement                 Achievement  @relation(fields: [achievement_id], references: [achievement_id])
+
+  @@map("notification_achievements")
+}
+
+model NotificationFriendlist {
+  notification_friend_id Int          @id @default(autoincrement())
+  notification_id        Int
+  friendlist_id          Int
+  notification           Notification @relation(fields: [notification_id], references: [notification_id])
+  friendlist             Friendlist   @relation(fields: [friendlist_id], references: [friendlist_id])
+
+  @@map("notification_friendlists")
+}
+
+model Friendlist {
+  friendlist_id Int                      @id @default(autoincrement())
+  user_id       Int
+  userfriend_id Int
+  status        String                   @db.VarChar(100)
+  user          User                     @relation(fields: [user_id], references: [user_id])
+  notifications NotificationFriendlist[]
+
+  @@map("friendlists")
+}
+
+model Challenge {
+  id          Int             @id @default(autoincrement())
+  name        String          @db.VarChar(100)
+  description String          @db.Text
+  runs        Run[]
+  users       UserChallenge[]
+
+  @@map("challenges")
+}
+
+model UserChallenge {
+  id           Int       @id @default(autoincrement())
+  user_id      Int
+  challenge_id Int
+  user         User      @relation(fields: [user_id], references: [user_id])
+  challenge    Challenge @relation(fields: [challenge_id], references: [id])
+
+  @@map("user_challenges")
+}
+
+model Run {
+  run_id            Int        @id @default(autoincrement())
+  user_id           Int
+  start_time        DateTime
+  progress_distance Float
+  progress_duration Float
+  location          String     @db.VarChar(255)
+  challenge_id      Int?
+  user              User       @relation(fields: [user_id], references: [user_id])
+  challenge         Challenge? @relation(fields: [challenge_id], references: [id])
+  histories         History[]
+
+  @@map("runs")
+}
+
+model History {
+  history_id  Int      @id @default(autoincrement())
+  user_id     Int
+  distance    Float
+  duration    Float
+  achievement Int?
+  date        DateTime
+  calorie     Float
+  run_id      Int
+  user        User     @relation(fields: [user_id], references: [user_id])
+  run         Run      @relation(fields: [run_id], references: [run_id])
+
+  @@map("histories")
+}
