@@ -41,4 +41,10 @@ export class UserController {
             next(error)
         }
     }
+
+    // static async getAllUser(req: UserRequest, res: Response, next: NextFunction){
+    //     try{
+
+    //     }
+    // }
 }
