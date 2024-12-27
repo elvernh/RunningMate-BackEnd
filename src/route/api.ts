@@ -1,8 +1,12 @@
-import express from "express"
-import { authMiddleware } from "../middleware/auth-middleware"
-import { UserController } from "../controller/user-controller"
+import express from "express";
+import { authMiddleware } from "../middleware/auth-middleware";
+import { UserController } from "../controller/user-controller";
 
-export const apiRouter = express.Router()
-apiRouter.use(authMiddleware)
+export const apiRouter = express.Router();
 
-apiRouter.post("/api/logout", UserController.logout)
+// Apply authMiddleware to all routes in apiRouter
+apiRouter.use(authMiddleware);
+
+// Define authenticated routes
+// apiRouter.post("/logout", authMiddleware, UserController.logout);
+apiRouter.post("/logout", UserController.logout);
