@@ -82,6 +82,7 @@ class UserService {
                     token: null,
                 },
             });
+            return "Logout Successful!";
         });
     }
 }

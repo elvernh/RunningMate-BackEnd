@@ -12,18 +12,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
 const database_1 = require("../application/database");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.get("X-API-TOKEN");
-    if (token) {
-        const user = yield database_1.prismaClient.user.findFirst({
-            where: {
-                token: token,
-            },
-        });
-        if (user) {
-            req.user = user;
-            next();
-            return;
+    try {
+        const token = req.get("X-API-TOKEN");
+        if (!token) {
+            res.status(401).json({ error: "Missing API token" });
+            return; // Ensure no further processing
         }
+        const user = yield database_1.prismaClient.user.findFirst({
+            where: { token },
+        });
+        if (!user) {
+            res.status(401).json({ error: "Invalid or expired token" });
+            return; // Ensure no further processing
+        }
+        req.user = user; // Attach user to the request
+        next(); // Pass control to the next middleware or route handler
+    }
+    catch (error) {
+        console.error("Error in authMiddleware:", error);
+        next(error); // Pass error to the global error handler
     }
 });
 exports.authMiddleware = authMiddleware;

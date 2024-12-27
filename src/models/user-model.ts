@@ -14,11 +14,15 @@ export interface LoginUserRequest {
 export interface UserResponse {
     token?: string
     username: string
+    email: string
+    password: string
 }
 
 export function toUserResponse(user: User): UserResponse{
     return {
         token: user.token ?? "",
-        username: user.username
+        username: user.username,
+        email: user.email,
+        password: user.password
     }
 }

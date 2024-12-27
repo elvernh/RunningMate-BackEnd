@@ -5,6 +5,8 @@ function toUserResponse(user) {
     var _a;
     return {
         token: (_a = user.token) !== null && _a !== void 0 ? _a : "",
-        username: user.username
+        username: user.username,
+        email: user.email,
+        password: user.password
     };
 }
