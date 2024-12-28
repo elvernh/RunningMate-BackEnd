@@ -9,6 +9,9 @@ function toRunResponse(run) {
         progress_distance: run.progress_distance,
         progress_duration: run.progress_duration,
         location: run.location,
-        challenge_id: run.challenge_id
+        challenge_id: run.challenge_id,
+        timestamp: run.timestamp,
+        avgSpeedInKMH: run.avgSpeedInKMH,
+        caloriesBurned: run.caloriesBurned,
     };
 }
