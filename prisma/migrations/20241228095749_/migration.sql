@@ -90,8 +90,11 @@ CREATE TABLE "runs" (
     "run_id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "start_time" TIMESTAMP(3) NOT NULL,
-    "progress_distance" DOUBLE PRECISION NOT NULL,
-    "progress_duration" DOUBLE PRECISION NOT NULL,
+    "timestamp" INTEGER NOT NULL DEFAULT 0,
+    "avgSpeedInKMH" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    "progress_distance" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    "progress_duration" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    "caloriesBurned" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
     "location" VARCHAR(255) NOT NULL,
     "challenge_id" INTEGER,
 

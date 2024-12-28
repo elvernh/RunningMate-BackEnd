@@ -115,16 +115,20 @@ model UserChallenge {
 }
 
 model Run {
-  run_id            Int        @id @default(autoincrement())
+  run_id            Int      @id @default(autoincrement())
   user_id           Int
   start_time        DateTime
-  progress_distance Float
-  progress_duration Float
-  location          String     @db.VarChar(255)
+  timestamp         Int      @default(0)
+  avgSpeedInKMH     Float    @default(0.0)
+  progress_distance Float    @default(0.0)
+  progress_duration Float    @default(0.0)
+  caloriesBurned    Float    @default(0.0)
+  location          String   @db.VarChar(255)
   challenge_id      Int?
-  user              User       @relation(fields: [user_id], references: [user_id])
-  challenge         Challenge? @relation(fields: [challenge_id], references: [id])
-  histories         History[]
+
+  user      User       @relation(fields: [user_id], references: [user_id])
+  challenge Challenge? @relation(fields: [challenge_id], references: [id])
+  histories History[]
 
   @@map("runs")
 }
