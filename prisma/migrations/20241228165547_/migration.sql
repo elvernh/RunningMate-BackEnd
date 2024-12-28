@@ -97,6 +97,7 @@ CREATE TABLE "runs" (
     "caloriesBurned" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
     "location" VARCHAR(255) NOT NULL,
     "challenge_id" INTEGER,
+    "runImage" TEXT NOT NULL,
 
     CONSTRAINT "runs_pkey" PRIMARY KEY ("run_id")
 );
