@@ -9,4 +9,6 @@ apiRouter.use(authMiddleware);
 
 // Define authenticated routes
 // apiRouter.post("/logout", authMiddleware, UserController.logout);
-apiRouter.post("/logout", UserController.logout);
+
+
+apiRouter.post("/api/logout", UserController.logout);
