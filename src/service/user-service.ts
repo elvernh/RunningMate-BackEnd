@@ -2,7 +2,7 @@ import { User } from "@prisma/client";
 import { prismaClient } from "../application/database";
 import { logger } from "../application/logging";
 import { ResponseError } from "../error/response-error";
-import { LoginUserRequest, RegisterUserRequest, UserResponse, toUserResponse } from "../models/user-model";
+import { LoginUserRequest, PublicUserResponse, RegisterUserRequest, UserResponse, toPublicUserResponse, toUserResponse } from "../models/user-model";
 import { UserValidation } from "../validations/user-validation";
 import { Validation } from "../validations/validations";
 import bcrypt from "bcrypt";
@@ -89,5 +89,25 @@ export class UserService {
         })
 
         return "Logout Successful!";
+    }
+
+    static async getAllUsers(currentUser: User): Promise<PublicUserResponse[]> {
+        try {
+            // Fetch all users, excluding the current user
+            const allUsers = await prismaClient.user.findMany({
+                where: {
+                    NOT: { user_id: currentUser.user_id }, // Exclude current user from the result
+                },
+            });
+
+            // Map through all users and generate their public responses
+            const publicUserResponses = await Promise.all(
+                allUsers.map((user) => toPublicUserResponse(user)) // Generate response for each user
+            );
+
+            return publicUserResponses;
+        } catch (error) {
+            throw new Error(`Failed to retrieve users: ${error}`);
+        }
     }
 }
