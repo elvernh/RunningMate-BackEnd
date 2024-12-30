@@ -5,6 +5,7 @@ function toChallengeResponse(challenge) {
     return {
         challenge_id: challenge.id,
         name: challenge.name,
-        description: challenge.description
+        description: challenge.description,
+        image: challenge.image
     };
 }

@@ -13,6 +13,10 @@ exports.authMiddleware = void 0;
 const database_1 = require("../application/database");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const publicRoutes = ["/achievements"];
+        if (publicRoutes.includes(req.path)) {
+            return next();
+        }
         const token = req.get("X-API-TOKEN");
         if (!token) {
             res.status(401).json({ error: "Missing API token" });

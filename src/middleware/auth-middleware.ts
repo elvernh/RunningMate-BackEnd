@@ -4,6 +4,12 @@ import { UserRequest } from "../type/user-request";
 
 export const authMiddleware = async (req: UserRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
+
+        const publicRoutes = ["/achievements", "/challenges"];
+        if (publicRoutes.includes(req.path)) {
+            return next(); 
+        }
+
         const token = req.get("X-API-TOKEN");
 
         if (!token) {
