@@ -43,5 +43,16 @@ class RunService {
             return (0, run_model_1.toRunResponse)(run);
         });
     }
+    static deleteRun(user, run_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.prismaClient.run.delete({
+                where: {
+                    user_id: user.user_id,
+                    run_id: run_id
+                }
+            });
+            return "Data has been removed successfully";
+        });
+    }
 }
 exports.RunService = RunService;

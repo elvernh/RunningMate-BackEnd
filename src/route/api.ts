@@ -12,7 +12,9 @@ apiRouter.use(authMiddleware);
 // apiRouter.post("/logout", authMiddleware, UserController.logout);
 
 //users
-apiRouter.get("/api/users", UserController.getAllUsers)
+// apiRouter.get("/api/users", UserController.getAllUsers) //getAllUsers masih error
+// apiRouter.get("/api/users/:user_id", UserController.getUser)
+
 //run
 apiRouter.post("/api/run", RunController.addRun)
 apiRouter.delete("/api/run/:run_id", RunController.deleteRun)

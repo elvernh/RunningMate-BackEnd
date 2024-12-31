@@ -28,21 +28,22 @@ export interface PublicUserResponse{
 }
 
 export async function toPublicUserResponse(user: User): Promise<PublicUserResponse>{
-    const friendCount = await prismaClient.friendlist.count({
-        where:{
+    const totalFriends = await prismaClient.friendlist.count({
+        where: {
             user_id: user.user_id,
-            status: "accepted"
-        }
-    })
-
-    const achievements = await prismaClient.userAchievement.findMany({
-        where: { user_id: user.user_id },
-        include: {
-            achievement: true, // Include the achievement details
+            status: "accepted",
         },
     });
 
-    // Map achievements to the response format
+    // Fetch the user's achievements, including details from the `Achievement` model
+    const achievements = await prismaClient.userAchievement.findMany({
+        where: { user_id: user.user_id },
+        include: {
+            achievement: true, // Include the related achievement details
+        },
+    });
+
+    // Map the fetched achievements to the `AchievementResponse` format
     const achievementResponses: AchievementResponse[] = achievements.map((userAchievement) => ({
         achievement_id: userAchievement.achievement.achievement_id,
         name: userAchievement.achievement.name,
@@ -54,10 +55,16 @@ export async function toPublicUserResponse(user: User): Promise<PublicUserRespon
     return {
         username: user.username,
         level: user.level,
-        totalFriends: friendCount,
+        totalFriends,
         achievements: achievementResponses,
     };
 }
+
+export async function toPublicUserResponseList(prismaUsers: User[]): Promise<PublicUserResponse[]> {
+    // Use Promise.all to resolve all individual user responses in parallel
+    return await Promise.all(prismaUsers.map((user) => toPublicUserResponse(user)));
+}
+
 // export function toUserList(prismaUser: User[]): 
 
 export function toUserResponse(user: User): UserResponse{

@@ -2,7 +2,7 @@ import { User } from "@prisma/client";
 import { prismaClient } from "../application/database";
 import { logger } from "../application/logging";
 import { ResponseError } from "../error/response-error";
-import { LoginUserRequest, PublicUserResponse, RegisterUserRequest, UserResponse, toPublicUserResponse, toUserResponse } from "../models/user-model";
+import { LoginUserRequest, PublicUserResponse, RegisterUserRequest, UserResponse, toPublicUserResponse, toPublicUserResponseList, toUserResponse } from "../models/user-model";
 import { UserValidation } from "../validations/user-validation";
 import { Validation } from "../validations/validations";
 import bcrypt from "bcrypt";
@@ -101,13 +101,32 @@ export class UserService {
             });
 
             // Map through all users and generate their public responses
-            const publicUserResponses = await Promise.all(
-                allUsers.map((user) => toPublicUserResponse(user)) // Generate response for each user
-            );
-
-            return publicUserResponses;
+            return toPublicUserResponseList(allUsers)
+            // return publicUserResponses;
         } catch (error) {
             throw new Error(`Failed to retrieve users: ${error}`);
         }
     }
+
+    static async getUser(currentUser: User, user_id: number): Promise<PublicUserResponse> {
+        try {
+            // Fetch the user by ID, ensuring it's not the current user
+            const user = await prismaClient.user.findUnique({
+                where: {
+                    user_id: user_id,
+                },
+            });
+    
+            // Check if the user exists and isn't the current user
+            if (!user || user.user_id === currentUser.user_id) {
+                throw new Error("User not found or cannot fetch yourself.");
+            }
+    
+            // Convert the fetched user to a public user response
+            return await toPublicUserResponse(user);
+        } catch (error) {
+            throw new Error(`Failed to retrieve user with ID ${user_id}: ${error}`);
+        }
+    }
+    
 }

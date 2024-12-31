@@ -60,6 +60,17 @@ export class UserController {
         }
     }
 
+    static async getUser(req: UserRequest, res: Response, next: NextFunction){
+        try{
+            const response = await UserService.getUser(req.user!, Number(req.params.user_id))
+            res.status(200).json(response);
+        }catch(error){
+            next(error)
+        }
+    }
+
+    // static async getUser(req: UserRequest, res: Response)
+
     // static async getAllUser(currentUser: User): Promise<PublicUserResponse[]> {
     //     // Fetch all users excluding the current user
     //     const allUsers = await prismaClient.user.findMany({
