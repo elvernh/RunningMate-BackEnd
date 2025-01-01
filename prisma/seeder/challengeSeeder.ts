@@ -8,22 +8,22 @@ async function main() {
             {
                 name: "Run For 15 Minutes",
                 description: "Run for 15 minutes in a single run",
-                image: 'http://localhost:3000/assets/15min.jpg'
+                image: 'http://localhost:3000/assets/15min.png'
             },
             {
                 name: "Burn 50 kcal",
                 description: "Burn 50 kcal in a single run",
-                image: 'http://localhost:3000/assets/50kcal.jpg'
+                image: 'http://localhost:3000/assets/50kcal.png'
             },
             {
                 name: "Run for 3 days consecutively",
                 description: "Run for 3 days in a row",
-                image: 'http://localhost:3000/assets/3days.jpg'
+                image: 'http://localhost:3000/assets/3days.png'
             },
             {
                 name: "Complete a 2 km run",
                 description: "Reach 2 km in a single run",
-                image: 'http://localhost:3000/assets/2km.jpg'
+                image: 'http://localhost:3000/assets/2km.png'
             },
 
         ]        

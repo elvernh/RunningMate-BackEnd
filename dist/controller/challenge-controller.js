@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChallengeController = void 0;
 const challenge_service_1 = require("../service/challenge-service");
 class ChallengeController {
-    getChallenges(req, res, next) {
+    static getChallenges(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const challenges = yield challenge_service_1.ChallengeService.getChallenges();

@@ -13,7 +13,7 @@ exports.authMiddleware = void 0;
 const database_1 = require("../application/database");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const publicRoutes = ["/achievements"];
+        const publicRoutes = ["/achievements", "/challenges"];
         if (publicRoutes.includes(req.path)) {
             return next();
         }
