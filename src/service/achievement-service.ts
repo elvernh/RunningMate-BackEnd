@@ -1,6 +1,5 @@
 import { Achievement } from "@prisma/client";
 import { prismaClient } from "../application/database";
-import { logger } from "../application/logging";
 import { ResponseError } from "../error/response-error";
 import { CreateAchievementRequest, AchievementResponse, toAchievementResponse } from "../models/achievement-model";
 import bcrypt from "bcrypt";
