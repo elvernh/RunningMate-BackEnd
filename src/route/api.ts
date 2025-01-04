@@ -18,4 +18,6 @@ apiRouter.use(authMiddleware);
 //run
 apiRouter.post("/api/run", RunController.addRun)
 apiRouter.delete("/api/run/:run_id", RunController.deleteRun)
+
+apiRouter.get("/api/user/:userId(\\d+")
 apiRouter.post("/api/logout", UserController.logout);

@@ -69,6 +69,24 @@ export class UserController {
         }
     }
 
+    static async getUserData(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Extract userId from the request parameters (or authentication)
+            const userId = parseInt(req.params.userId, 10);  // Assuming userId comes from the params
+
+            // Call the UserService to get the user's data
+            const userData = await UserService.getUserDashboard(userId);
+
+            // Return the user data as the response
+            res.status(200).json({
+                data: userData
+            });
+        } catch (error) {
+            // Pass any errors to the next error handling middleware
+            next(error);
+        }
+    }
+
     // static async getUser(req: UserRequest, res: Response)
 
     // static async getAllUser(currentUser: User): Promise<PublicUserResponse[]> {

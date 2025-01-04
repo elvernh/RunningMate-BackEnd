@@ -1,4 +1,4 @@
-import { User } from "@prisma/client"
+import { Friendlist, Run, User, UserAchievement, UserChallenge } from "@prisma/client"
 import { AchievementResponse } from "./achievement-model"
 import { prismaClient } from "../application/database"
 
@@ -27,6 +27,31 @@ export interface PublicUserResponse{
     achievements: AchievementResponse[]
 }
 
+export interface DashboardResponse {
+    username: string;
+    email: string;
+    level: number;
+    expBar: number;
+    achievements: UserAchievement[];
+    notifications: Notification[];
+    runs: Run[];
+    challenges: UserChallenge[];
+    friendLists: Friendlist[];
+}
+
+export async function toDashboardResponse(user: any): Promise<DashboardResponse>{
+    return {
+        username: user.username,
+        email: user.email,
+        level: user.level,
+        expBar: user.expBar,
+        achievements: user.achievements,
+        notifications: user.notifications,
+        runs: user.runs,
+        challenges: user.challenges,
+        friendLists: user.friendLists,
+    };
+}
 export async function toPublicUserResponse(user: User): Promise<PublicUserResponse>{
     const totalFriends = await prismaClient.friendlist.count({
         where: {
@@ -75,3 +100,4 @@ export function toUserResponse(user: User): UserResponse{
         password: user.password
     }
 }
+

@@ -2,7 +2,7 @@ import { User } from "@prisma/client";
 import { prismaClient } from "../application/database";
 import { logger } from "../application/logging";
 import { ResponseError } from "../error/response-error";
-import { LoginUserRequest, PublicUserResponse, RegisterUserRequest, UserResponse, toPublicUserResponse, toPublicUserResponseList, toUserResponse } from "../models/user-model";
+import { DashboardResponse, LoginUserRequest, PublicUserResponse, RegisterUserRequest, UserResponse, toDashboardResponse, toPublicUserResponse, toPublicUserResponseList, toUserResponse } from "../models/user-model";
 import { UserValidation } from "../validations/user-validation";
 import { Validation } from "../validations/validations";
 import bcrypt from "bcrypt";
@@ -126,6 +126,27 @@ export class UserService {
             return await toPublicUserResponse(user);
         } catch (error) {
             throw new Error(`Failed to retrieve user with ID ${user_id}: ${error}`);
+        }
+    }
+
+    static async getUserDashboard(userId: number): Promise<DashboardResponse>{
+        try{
+            const user = await prismaClient.user.findUnique({
+                where: { user_id: userId },
+                include: {
+                    achievements: true,
+                    notifications: true,
+                    runs: true,
+                    challenges: true,
+                    friendLists: true,
+                },
+            });
+            if (!user) {
+                throw new Error("User not found");
+            }
+            return toDashboardResponse(user);
+        }catch(error){
+            throw new Error(`Failed to retrieve user with ID ${userId}: ${error}`)
         }
     }
     
