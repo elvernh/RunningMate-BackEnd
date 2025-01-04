@@ -85,5 +85,44 @@ class UserService {
             return "Logout Successful!";
         });
     }
+    static getAllUsers(currentUser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Fetch all users, excluding the current user
+                const allUsers = yield database_1.prismaClient.user.findMany({
+                    where: {
+                        NOT: { user_id: currentUser.user_id }, // Exclude current user from the result
+                    },
+                });
+                // Map through all users and generate their public responses
+                return (0, user_model_1.toPublicUserResponseList)(allUsers);
+                // return publicUserResponses;
+            }
+            catch (error) {
+                throw new Error(`Failed to retrieve users: ${error}`);
+            }
+        });
+    }
+    static getUser(currentUser, user_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Fetch the user by ID, ensuring it's not the current user
+                const user = yield database_1.prismaClient.user.findUnique({
+                    where: {
+                        user_id: user_id,
+                    },
+                });
+                // Check if the user exists and isn't the current user
+                if (!user || user.user_id === currentUser.user_id) {
+                    throw new Error("User not found or cannot fetch yourself.");
+                }
+                // Convert the fetched user to a public user response
+                return yield (0, user_model_1.toPublicUserResponse)(user);
+            }
+            catch (error) {
+                throw new Error(`Failed to retrieve user with ID ${user_id}: ${error}`);
+            }
+        });
+    }
 }
 exports.UserService = UserService;
