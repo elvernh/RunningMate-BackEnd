@@ -9,10 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.toDashboardResponse = toDashboardResponse;
 exports.toPublicUserResponse = toPublicUserResponse;
 exports.toPublicUserResponseList = toPublicUserResponseList;
 exports.toUserResponse = toUserResponse;
 const database_1 = require("../application/database");
+function toDashboardResponse(user) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return {
+            username: user.username,
+            email: user.email,
+            level: user.level,
+            expBar: user.expBar,
+            achievements: user.achievements,
+            notifications: user.notifications,
+            runs: user.runs,
+            challenges: user.challenges,
+            friendLists: user.friendLists,
+        };
+    });
+}
 function toPublicUserResponse(user) {
     return __awaiter(this, void 0, void 0, function* () {
         const totalFriends = yield database_1.prismaClient.friendlist.count({

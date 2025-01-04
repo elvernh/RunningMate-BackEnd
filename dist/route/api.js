@@ -19,4 +19,5 @@ exports.apiRouter.use(auth_middleware_1.authMiddleware);
 //run
 exports.apiRouter.post("/api/run", run_controller_1.RunController.addRun);
 exports.apiRouter.delete("/api/run/:run_id", run_controller_1.RunController.deleteRun);
+exports.apiRouter.get("/api/user/:userId(\\d+");
 exports.apiRouter.post("/api/logout", user_controller_1.UserController.logout);

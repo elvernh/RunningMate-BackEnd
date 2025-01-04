@@ -24,7 +24,6 @@ export interface RunResponse {
   timestamp: number;
   avgSpeedInKMH: number;
   caloriesBurned: number;
-  runImage: string
 }
 
 export function toRunResponse(run: Run): RunResponse {
@@ -39,6 +38,5 @@ export function toRunResponse(run: Run): RunResponse {
     timestamp: run.timestamp,
     avgSpeedInKMH: run.avgSpeedInKMH,
     caloriesBurned: run.caloriesBurned,
-    runImage: run.runImage
   };
 }
