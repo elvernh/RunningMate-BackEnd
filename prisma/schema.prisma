@@ -126,6 +126,7 @@ model Run {
   caloriesBurned    Float    @default(0.0)
   location          String   @db.VarChar(255)
   challenge_id      Int?
+  runImage          String
 
   user      User       @relation(fields: [user_id], references: [user_id])
   challenge Challenge? @relation(fields: [challenge_id], references: [id])
