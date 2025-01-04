@@ -4,12 +4,13 @@ import { publicRouter } from "../route/public-api";
 import { apiRouter } from "../route/api";
 
 const app = express();
+app.use(express.json());
 
 // Serve static assets (like images, etc.) from the 'assets' directory
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/assets', express.static(path.join(process.cwd(), '../assets')));
 
 // Allow parsing JSON in incoming requests
-app.use(express.json());
+
 
 // Use the public routes (login, register, achievements, etc.)
 app.use(publicRouter);

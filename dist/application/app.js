@@ -4,12 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const path_1 = __importDefault(require("path"));
 const public_api_1 = require("../route/public-api");
 const api_1 = require("../route/api");
-const path = require('path');
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+// Serve static assets (like images, etc.) from the 'assets' directory
+app.use('/assets', express_1.default.static(path_1.default.join(process.cwd(), '../assets')));
+// Allow parsing JSON in incoming requests
+// Use the public routes (login, register, achievements, etc.)
 app.use(public_api_1.publicRouter);
+// Use the API routes (with authentication middleware, etc.)
 app.use(api_1.apiRouter);
-app.use('/assets', express_1.default.static(path.join(__dirname, 'assets')));
 exports.default = app;
