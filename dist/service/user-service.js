@@ -124,5 +124,28 @@ class UserService {
             }
         });
     }
+    static getUserDashboard(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield database_1.prismaClient.user.findUnique({
+                    where: { user_id: userId },
+                    include: {
+                        achievements: true,
+                        notifications: true,
+                        runs: true,
+                        challenges: true,
+                        friendLists: true,
+                    },
+                });
+                if (!user) {
+                    throw new Error("User not found");
+                }
+                return (0, user_model_1.toDashboardResponse)(user);
+            }
+            catch (error) {
+                throw new Error(`Failed to retrieve user with ID ${userId}: ${error}`);
+            }
+        });
+    }
 }
 exports.UserService = UserService;

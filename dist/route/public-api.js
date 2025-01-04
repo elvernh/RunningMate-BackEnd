@@ -13,6 +13,6 @@ exports.publicRouter = express_1.default.Router();
 exports.publicRouter.post("/api/login", user_controller_1.UserController.login);
 exports.publicRouter.post("/api/register", user_controller_1.UserController.register);
 exports.publicRouter.get("/api/achievements", achievement_controller_1.AchievementController.getAchievements);
-exports.publicRouter.get("/api/getChallenges", challenge_controller_1.ChallengeController.getChallenges);
+exports.publicRouter.get("/api/challenges", challenge_controller_1.ChallengeController.getChallenges);
 exports.publicRouter.get("/api/getUserAchievements/:user_id", userAchievement_controller_1.UserAchievementController.getUserAchievement);
 exports.publicRouter.post("/api/unlockUserAchievement/:user_id", userAchievement_controller_1.UserAchievementController.unlockUserAchievement);

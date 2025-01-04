@@ -22,7 +22,7 @@ model User {
   level        Int               @default(1)
   expBar       Int               @default(100)
   achievements UserAchievement[]
-  notifactions Notification[]
+  notifications Notification[]
   runs         Run[]
   challenges   UserChallenge[]
   friendLists  Friendlist[]

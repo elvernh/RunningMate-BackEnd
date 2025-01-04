@@ -33,7 +33,7 @@ export class RunService {
         timestamp: req.timestamp,
         avgSpeedInKMH: req.avgSpeedInKMH,
         caloriesBurned: req.caloriesBurned,
-        // runImage: req.runImage,
+        runImage: req.runImage,
       },
     });
 

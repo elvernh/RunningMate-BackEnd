@@ -82,5 +82,23 @@ class UserController {
             }
         });
     }
+    static getUserData(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Extract userId from the request parameters (or authentication)
+                const userId = parseInt(req.params.userId, 10); // Assuming userId comes from the params
+                // Call the UserService to get the user's data
+                const userData = yield user_service_1.UserService.getUserDashboard(userId);
+                // Return the user data as the response
+                res.status(200).json({
+                    data: userData
+                });
+            }
+            catch (error) {
+                // Pass any errors to the next error handling middleware
+                next(error);
+            }
+        });
+    }
 }
 exports.UserController = UserController;
