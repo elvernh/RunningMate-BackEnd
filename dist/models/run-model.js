@@ -13,5 +13,6 @@ function toRunResponse(run) {
         timestamp: run.timestamp,
         avgSpeedInKMH: run.avgSpeedInKMH,
         caloriesBurned: run.caloriesBurned,
+        runImage: run.runImage
     };
 }

@@ -54,5 +54,33 @@ class UserController {
             }
         });
     }
+    static getAllUsers(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const currentUser = req.user; // Assuming `req.user` contains the current logged-in user object
+                if (!currentUser) {
+                    return res.status(400).json({ message: "User not found" });
+                }
+                // Fetch all users using the UserService
+                const users = yield user_service_1.UserService.getAllUsers(currentUser);
+                // Return the list of public user responses
+                res.status(200).json(users);
+            }
+            catch (error) {
+                next(error); // Forward the error to the error-handling middleware
+            }
+        });
+    }
+    static getUser(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield user_service_1.UserService.getUser(req.user, Number(req.params.user_id));
+                res.status(200).json(response);
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
 }
 exports.UserController = UserController;
