@@ -72,6 +72,7 @@ CREATE TABLE "challenges" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "description" TEXT NOT NULL,
+    "image" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "challenges_pkey" PRIMARY KEY ("id")
 );
