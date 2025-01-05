@@ -47,7 +47,7 @@ async function main() {
             {
                 name: "First Timer",
                 description: "Complete your first run",
-                image: 'http://localhost:3000/assets/1sttimer.jpg'
+                image: 'http://localhost:3000/assets/1sttimer.png'
 
             }
         ]

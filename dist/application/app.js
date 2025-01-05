@@ -10,7 +10,7 @@ const api_1 = require("../route/api");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 // Serve static assets (like images, etc.) from the 'assets' directory
-app.use('/assets', express_1.default.static(path_1.default.join(process.cwd(), '../assets')));
+app.use('/assets', express_1.default.static(path_1.default.join(process.cwd(), 'assets')));
 // Allow parsing JSON in incoming requests
 // Use the public routes (login, register, achievements, etc.)
 app.use(public_api_1.publicRouter);

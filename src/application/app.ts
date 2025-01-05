@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // Serve static assets (like images, etc.) from the 'assets' directory
-app.use('/assets', express.static(path.join(process.cwd(), '../assets')));
+app.use('/assets', express.static(path.join(process.cwd(), 'assets')));
 
 // Allow parsing JSON in incoming requests
 
