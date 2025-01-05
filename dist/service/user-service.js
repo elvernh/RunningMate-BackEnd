@@ -88,18 +88,20 @@ class UserService {
     static getAllUsers(currentUser) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // Fetch all users, excluding the current user
                 const allUsers = yield database_1.prismaClient.user.findMany({
                     where: {
-                        NOT: { user_id: currentUser.user_id }, // Exclude current user from the result
+                        NOT: { user_id: currentUser.user_id },
                     },
                 });
-                // Map through all users and generate their public responses
-                return (0, user_model_1.toPublicUserResponseList)(allUsers);
-                // return publicUserResponses;
+                return (0, user_model_1.toPublicUserResponseList)(allUsers); // Assuming this is a valid function that formats user responses
             }
-            catch (error) {
-                throw new Error(`Failed to retrieve users: ${error}`);
+            catch (error) { // Typing the error as `unknown`
+                if (error instanceof Error) {
+                    throw new Error(`Failed to retrieve users: ${error.message}`);
+                }
+                else {
+                    throw new Error('An unknown error occurred.');
+                }
             }
         });
     }

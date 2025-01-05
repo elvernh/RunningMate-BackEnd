@@ -94,25 +94,34 @@ export class UserController {
 
     // static async getUser(req: UserRequest, res: Response)
 
-    // static async getAllUser(currentUser: User): Promise<PublicUserResponse[]> {
-    //     // Fetch all users excluding the current user
-    //     const allUsers = await prismaClient.user.findMany({
-    //         where: {
-    //             NOT: { user_id: currentUser.user_id }, // Exclude current user from the results
-    //         },
-    //     });
+    static async getAllUser(currentUser: User): Promise<PublicUserResponse[]> {
+        // Fetch all users excluding the current user
+        const allUsers = await prismaClient.user.findMany({
+            where: {
+                NOT: { user_id: currentUser.user_id }, // Exclude current user from the results
+            },
+        });
     
-    //     // Map through all users and generate their public responses
-    //     const publicUserResponses = await Promise.all(
-    //         allUsers.map((user) => toPublicUserResponse(user)) // Generate response for each user
-    //     );
+        // Map through all users and generate their public responses
+        const publicUserResponses = await Promise.all(
+            allUsers.map((user) => toPublicUserResponse(user)) // Generate response for each user
+        );
     
-    //     return publicUserResponses;
-    // }
+        return publicUserResponses;
+    }
     
-    // static async getAllUser(req: UserRequest, res: Response, next: NextFunction){
-    //     try{
-
-    //     }
-    // }
+    static async deleteUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = parseInt(req.params.userId, 10);
+            const user = await prismaClient.user.delete({
+                where: {
+                    user_id: userId,
+                },
+            });
+    
+            res.status(200).json({ message: "User deleted successfully" });
+        } catch (error) {
+            next(error);
+        }
+    }
 }

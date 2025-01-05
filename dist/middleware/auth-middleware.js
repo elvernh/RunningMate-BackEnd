@@ -13,7 +13,7 @@ exports.authMiddleware = void 0;
 const database_1 = require("../application/database");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const publicRoutes = ["/achievements", "/challenges"];
+        const publicRoutes = ["/achievements", "/challenges", "/users"];
         if (req.path.startsWith('/assets') || publicRoutes.includes(req.path)) {
             console.log("Request Path:", req.path);
             return next(); // Skip authentication for static files and public routes

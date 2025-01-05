@@ -10,7 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
+const user_model_1 = require("../models/user-model");
 const user_service_1 = require("../service/user-service");
+const database_1 = require("../application/database");
 class UserController {
     static register(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -59,15 +61,19 @@ class UserController {
             try {
                 const currentUser = req.user; // Assuming `req.user` contains the current logged-in user object
                 if (!currentUser) {
-                    return res.status(400).json({ message: "User not found" });
+                    return res.status(400).json({ message: "User not found or not authenticated" });
                 }
                 // Fetch all users using the UserService
                 const users = yield user_service_1.UserService.getAllUsers(currentUser);
-                // Return the list of public user responses
                 res.status(200).json(users);
             }
-            catch (error) {
-                next(error); // Forward the error to the error-handling middleware
+            catch (error) { // Explicitly typing the error as `unknown`
+                if (error instanceof Error) { // Check if the error is an instance of Error
+                    next(new Error(`Failed to retrieve users: ${error.message}`)); // Handle the error gracefully
+                }
+                else {
+                    next(new Error('An unknown error occurred.'));
+                }
             }
         });
     }
@@ -96,6 +102,37 @@ class UserController {
             }
             catch (error) {
                 // Pass any errors to the next error handling middleware
+                next(error);
+            }
+        });
+    }
+    // static async getUser(req: UserRequest, res: Response)
+    static getAllUser(currentUser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Fetch all users excluding the current user
+            const allUsers = yield database_1.prismaClient.user.findMany({
+                where: {
+                    NOT: { user_id: currentUser.user_id }, // Exclude current user from the results
+                },
+            });
+            // Map through all users and generate their public responses
+            const publicUserResponses = yield Promise.all(allUsers.map((user) => (0, user_model_1.toPublicUserResponse)(user)) // Generate response for each user
+            );
+            return publicUserResponses;
+        });
+    }
+    static deleteUser(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = parseInt(req.params.userId, 10);
+                const user = yield database_1.prismaClient.user.delete({
+                    where: {
+                        user_id: userId,
+                    },
+                });
+                res.status(200).json({ message: "User deleted successfully" });
+            }
+            catch (error) {
                 next(error);
             }
         });
