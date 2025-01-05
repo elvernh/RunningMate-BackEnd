@@ -93,20 +93,23 @@ export class UserService {
 
     static async getAllUsers(currentUser: User): Promise<PublicUserResponse[]> {
         try {
-            // Fetch all users, excluding the current user
             const allUsers = await prismaClient.user.findMany({
                 where: {
-                    NOT: { user_id: currentUser.user_id }, // Exclude current user from the result
+                    NOT: { user_id: currentUser.user_id },
                 },
             });
-
-            // Map through all users and generate their public responses
-            return toPublicUserResponseList(allUsers)
-            // return publicUserResponses;
-        } catch (error) {
-            throw new Error(`Failed to retrieve users: ${error}`);
+    
+            return toPublicUserResponseList(allUsers); // Assuming this is a valid function that formats user responses
+        } catch (error: unknown) { // Typing the error as `unknown`
+            if (error instanceof Error) {
+                throw new Error(`Failed to retrieve users: ${error.message}`);
+            } else {
+                throw new Error('An unknown error occurred.');
+            }
         }
     }
+    
+    
 
     static async getUser(currentUser: User, user_id: number): Promise<PublicUserResponse> {
         try {

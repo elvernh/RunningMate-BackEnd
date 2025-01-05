@@ -5,7 +5,7 @@ import { UserRequest } from "../type/user-request";
 export const authMiddleware = async (req: UserRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
 
-        const publicRoutes = ["/achievements", "/challenges"];
+        const publicRoutes = ["/achievements", "/challenges", "/users"];
         if (req.path.startsWith('/assets') || publicRoutes.includes(req.path)) {
             console.log("Request Path:", req.path); 
             return next(); // Skip authentication for static files and public routes

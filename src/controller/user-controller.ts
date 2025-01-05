@@ -47,16 +47,21 @@ export class UserController {
     static async getAllUsers(req: UserRequest, res: Response, next: NextFunction) {
         try {
             const currentUser = req.user; // Assuming `req.user` contains the current logged-in user object
+    
             if (!currentUser) {
-                return res.status(400).json({ message: "User not found" });
+                return res.status(400).json({ message: "User not found or not authenticated" });
             }
+    
             // Fetch all users using the UserService
             const users = await UserService.getAllUsers(currentUser);
-
-            // Return the list of public user responses
+    
             res.status(200).json(users);
-        } catch (error) {
-            next(error); // Forward the error to the error-handling middleware
+        } catch (error: unknown) {  // Explicitly typing the error as `unknown`
+            if (error instanceof Error) { // Check if the error is an instance of Error
+                next(new Error(`Failed to retrieve users: ${error.message}`)); // Handle the error gracefully
+            } else {
+                next(new Error('An unknown error occurred.'));
+            }
         }
     }
 
